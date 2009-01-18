@@ -174,8 +174,8 @@ function mail2web_mailhandler($node, $result, $i, $header, $mailbox) {
   //  @TODO Should we be using strpos or stripos - I think we already have PHP 5 dependency?
   //  Check to see the mailbox name is in the string in case it has been tweaked by the mail client
   if (strpos($header->toaddress, $mbox_name) !== FALSE ) {
-	//  Just set it to the mailbox
-	$header->toaddress = $mbox_name;
+    //  Just set it to the mailbox
+    $header->toaddress = $mbox_name;
   }
   if ($header->toaddress == $mbox_name && $node->threading && ($params = mail2web_check_messageparams($node->threading, $header)) && empty($params['error'])) {
     // Now check user id , just go ahead if they match and it is a valid user
@@ -196,15 +196,15 @@ function mail2web_mailhandler($node, $result, $i, $header, $mailbox) {
           $node->comment = substr($node->body, 0, $pos);
           // Clean extra text added by mail clients
           // These are just the two that occur frequently - the rest could be handled by a filter
-	      $comment_text = $node->comment;
-	      $comment_text = preg_replace('/On\s(.|[\r\n])*wrote:[<br.*>\n\r]/', '', $comment_text, 1);
-	      if ($comment_text === $node->comment) {
-	        $comment_text = preg_replace('/-----Original Message-----/', '', $comment_text, 1);
-	      }
-	      $node->comment = $comment_text;
+          $comment_text = $node->comment;
+          $comment_text = preg_replace('/On\s(.|[\r\n])*wrote:[<br.*>\n\r]/', '', $comment_text, 1);
+          if ($comment_text === $node->comment) {
+            $comment_text = preg_replace('/-----Original Message-----/', '', $comment_text, 1);
+          }
+          $node->comment = $comment_text;
         }
         else {
-	      //  The marker could not be found so we will include the entire body
+          //  The marker could not be found so we will include the entire body
           $node->comment = $node->body;
         }
       }           
@@ -363,14 +363,14 @@ function mail2web_check_messageparams($messageid,$header) {
     if ($signature && $signature == mail2web_signature($params)) {
       // Check signature has not expired
       if (($expire = variable_get('mail2web_expiration', 0)) && $params['time'] + $expire < time()) {
-		$params['error'] = MAIL2WEB_ERROR_EXPIRED;
+        $params['error'] = MAIL2WEB_ERROR_EXPIRED;
       } 
       return $params;
     } else {
-      $params['error'] = MAIL2WEB_ERROR_SIGNATURE;			
+      $params['error'] = MAIL2WEB_ERROR_SIGNATURE;          
     }  
   } else {
-  	$params = array('error' => MAIL2WEB_ERROR_PARAMS);
+    $params = array('error' => MAIL2WEB_ERROR_PARAMS);
     return $params;
   }
 }
@@ -421,16 +421,16 @@ function mail2web_signature($params) {
  */
 function _mail2web_get_backup_messageid($body) {
   if (preg_match("/([0-9]+\.){4}+[a-z0-9]+@([a-z0-9-]+\.[a-z]{2,5})/i",$body,$matches)) {
-  	//  Check to make sure the match has our mail2web domain
+    //  Check to make sure the match has our mail2web domain
     $domain = variable_get('mail2web_server_string', 'example.com');
-	if ($matches[2] == $domain) {
+    if ($matches[2] == $domain) {
       $backup_messageid = $matches[0];
       // We have a match for the messageid and the mail2web domain string so we are good
-      return $backup_messageid;   	
-	}
-  }	
+      return $backup_messageid;     
+    }
+  } 
   else {
-	// No matches found so assume we have no messageid and node->threading is not set
+    // No matches found so assume we have no messageid and node->threading is not set
     return FALSE;
   }  
 }  
