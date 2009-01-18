@@ -6,6 +6,8 @@ Based on my proposal here: http://drupal.org/node/351260
 
 Please see main project page here http://drupal.org/project/mail2web
 
+Due to $message now being passed as an object vice array this module depends on a Messaging version dated after Dec 25, 2008
+
 There are several changes made to this module that have not been incorporated yet to the official version
 
 1) Addition of message id to body of email to handle cases when email clients strip needed header info.
@@ -17,4 +19,6 @@ There are several changes made to this module that have not been incorporated ye
    E.g. "On 1 Jan example wrote"
    *Note that this is not applied as a filter as in the D5 version.  
     This version actually removes the text before it is saved.
+4) If the marker from mail2web settings can not be found then the entire email will be used as the comment body.
+   This allows for inline commenting, which was a feature request from user testing.
   
