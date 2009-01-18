@@ -172,8 +172,8 @@ function mail2web_mailhandler($node, $result, $i, $header, $mailbox) {
   //  Some mail clients (iPhone) change the toaddress from example@example.com to "example@example.com"<example@example.com>
   //  @TODO This may need to be addressed in mailhandler?
   //  @TODO Should we be using strpos or stripos - I think we already have PHP 5 dependency?
-  //  Check to see if it starts with something like a double quote and if the mailbox name is in the string
-  if (strpos($header->toaddress, $mbox_name) != 0 && strpos($header->toaddress, $mbox_name) !== FALSE ) {
+  //  Check to see the mailbox name is in the string in case it has been tweaked by the mail client
+  if (strpos($header->toaddress, $mbox_name) !== FALSE ) {
 	//  Just set it to the mailbox
 	$header->toaddress = $mbox_name;
   }
@@ -195,6 +195,7 @@ function mail2web_mailhandler($node, $result, $i, $header, $mailbox) {
           // Mailhandler brings this in as a full node with teaser/body but we need to chnage context to comment
           $node->comment = substr($node->body, 0, $pos);
           // Clean extra text added by mail clients
+          // These are just the two that occur frequently - the rest could be handled by a filter
 	      $comment_text = $node->comment;
 	      $comment_text = preg_replace('/On\s(.|[\r\n])*wrote:[<br.*>\n\r]/', '', $comment_text, 1);
 	      if ($comment_text === $node->comment) {
